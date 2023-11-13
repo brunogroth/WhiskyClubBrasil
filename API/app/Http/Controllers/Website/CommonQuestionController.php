@@ -6,23 +6,63 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Website\StoreUpdateCommonQuestionRequest;
 use App\Http\Resources\Website\CommonQuestionResource;
 use App\Models\Website\CommonQuestion;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CommonQuestionController extends Controller
 {
+
+    public function __construct(
+        protected CommonQuestion $repository
+    ) {
+    }
+
     public function index()
     {
-        $commonQuestions = CommonQuestion::all();
+        $commonQuestions = $this->repository->all();
         $commonQuestionsRequest = CommonQuestionResource::collection($commonQuestions);
 
         return $commonQuestionsRequest;
     }
 
-    public function create(StoreUpdateCommonQuestionRequest $request)
+    public function store(StoreUpdateCommonQuestionRequest $request): JsonResponse|CommonQuestionResource
     {
         $dataCommonQuestion = $request->validated();
-        $commonQuestion = CommonQuestion::create($dataCommonQuestion);
+        $commonQuestion = $this->repository->create($dataCommonQuestion);
 
-        return response()->json(new CommonQuestionResource($commonQuestion));
+        return new CommonQuestionResource($commonQuestion);
+    }
+
+    public function show(int $id): JsonResponse|CommonQuestionResource
+    {
+        // $commonQuestion = CommonQuestion::find($id);
+        // $commonQuestion = CommonQuestion::where('id', $id)->first();
+        // if (!$commonQuestion) {
+        //     return response()->json(['message' => 'Common Question not found'], Response::HTTP_NOT_FOUND);
+        // }
+
+        $commonQuestion = $this->repository->findOrFail($id);
+
+        return new CommonQuestionResource($commonQuestion);
+    }
+
+    public function update(Request $request, int $id): JsonResponse|CommonQuestionResource
+    {
+        $commonQuestion = $this->repository->findOrFail($id);
+
+        $data = $request->validated();
+
+        $commonQuestion->update($data);
+
+        return new CommonQuestionResource($commonQuestion);
+    }
+
+    public function destroy(int $id): JsonResponse
+    {
+        $commonQuestion = $this->repository->findOrFail($id);
+        $commonQuestion->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

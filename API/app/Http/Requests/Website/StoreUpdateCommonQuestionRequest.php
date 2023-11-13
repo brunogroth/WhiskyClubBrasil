@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Website;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreUpdateCommonQuestionRequest extends FormRequest
 {
@@ -21,12 +22,12 @@ class StoreUpdateCommonQuestionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'question' => [
                 'required',
                 'string',
                 'max:255',
-                'unique:common_questions'
+                Rule::unique('common_questions')->ignore($this->id)
             ],
             'answer' => [
                 'required',
@@ -34,5 +35,7 @@ class StoreUpdateCommonQuestionRequest extends FormRequest
                 'max:255'
             ]
         ];
+
+        return $rules;
     }
 }
