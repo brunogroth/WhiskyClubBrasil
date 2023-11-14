@@ -18,22 +18,36 @@ class CommonQuestionController extends Controller
     ) {
     }
 
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $commonQuestions = $this->repository->all();
-        $commonQuestionsRequest = CommonQuestionResource::collection($commonQuestions);
+        $commonQuestionsResource = CommonQuestionResource::collection($commonQuestions);
 
-        return $commonQuestionsRequest;
+        return $commonQuestionsResource;
     }
 
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @return JsonResponse|CommonQuestionResource
+     */
     public function store(StoreUpdateCommonQuestionRequest $request): JsonResponse|CommonQuestionResource
     {
         $dataCommonQuestion = $request->validated();
+
         $commonQuestion = $this->repository->create($dataCommonQuestion);
 
         return new CommonQuestionResource($commonQuestion);
     }
 
+    /**
+     * Display the specified resource.
+     * 
+     * @return JsonResponse|CommonQuestionResource
+     */
     public function show(int $id): JsonResponse|CommonQuestionResource
     {
         // $commonQuestion = CommonQuestion::find($id);
@@ -47,10 +61,14 @@ class CommonQuestionController extends Controller
         return new CommonQuestionResource($commonQuestion);
     }
 
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return JsonResponse|CommonQuestionResource
+     */
     public function update(Request $request, int $id): JsonResponse|CommonQuestionResource
     {
         $commonQuestion = $this->repository->findOrFail($id);
-
         $data = $request->validated();
 
         $commonQuestion->update($data);
@@ -58,6 +76,11 @@ class CommonQuestionController extends Controller
         return new CommonQuestionResource($commonQuestion);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     * 
+     * @return JsonResponse
+     */
     public function destroy(int $id): JsonResponse
     {
         $commonQuestion = $this->repository->findOrFail($id);
