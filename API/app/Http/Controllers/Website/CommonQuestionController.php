@@ -66,7 +66,7 @@ class CommonQuestionController extends Controller
      * 
      * @return JsonResponse|CommonQuestionResource
      */
-    public function update(Request $request, int $id): JsonResponse|CommonQuestionResource
+    public function update(StoreUpdateCommonQuestionRequest $request, int $id): JsonResponse|CommonQuestionResource
     {
         $commonQuestion = $this->repository->findOrFail($id);
         $data = $request->validated();
