@@ -2,6 +2,7 @@
 
 // use Illuminate\Http\Request;
 
+use App\Http\Controllers\Website\AdvantageController;
 use App\Http\Controllers\Website\CommonQuestionController;
 use App\Http\Controllers\Website\WorkingStepController;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,9 @@ Route::prefix('/working-steps')->group(function () {
     Route::patch('/edit/{id}', [WorkingStepController::class, 'update'])->name('working-step.edit');
     Route::get('/{id}', [WorkingStepController::class, 'show'])->name('working-step.show');
     Route::delete('/{id}', [WorkingStepController::class, 'destroy'])->name('working-step.delete');
+});
+
+Route::prefix('/advantages')->group(function () {
+    Route::get('/', [AdvantageController::class, 'index'])->name('advantage.index');
+    Route::post('/create', [AdvantageController::class, 'store'])->name('advantage.store');
 });
