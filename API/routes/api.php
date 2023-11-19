@@ -26,4 +26,7 @@ Route::prefix('/working-steps')->group(function () {
 Route::prefix('/advantages')->group(function () {
     Route::get('/', [AdvantageController::class, 'index'])->name('advantage.index');
     Route::post('/create', [AdvantageController::class, 'store'])->name('advantage.store');
+    Route::patch('/edit/{id}', [AdvantageController::class, 'update'])->name('advantage.edit');
+    Route::get('/{id}', [AdvantageController::class, 'show'])->name('advantage.show');
+    Route::delete('/{id}', [AdvantageController::class, 'destroy'])->name('advantage.delete');
 });
