@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\Response;
+
 trait ResponseCreator
 {
     public function createResponse(int $statusCode, string $message = null, $data = [], $errors = [])
@@ -17,28 +19,28 @@ trait ResponseCreator
         );
     }
 
-    public function createResponseSuccess($data = [], $codeSuccess = 200, $message = null)
+    public function createResponseSuccess($data = [], $codeSuccess = Response::HTTP_OK, $message = null)
     {
         return $this->createResponse($codeSuccess, $message ?? "success", $data);
     }
 
     public function createResponseNotFound($message = null, $errors = null)
     {
-        return $this->createResponse(404, $message ?? "Not Found", [], $errors);
+        return $this->createResponse(Response::HTTP_NOT_FOUND, $message ?? "Not Found.", [], $errors);
     }
 
-    public function createResponseBadRequest($message = null, $errors = null, int $statusCode = 400)
+    public function createResponseBadRequest($message = null, $errors = null, int $statusCode = Response::HTTP_BAD_REQUEST)
     {
         return $this->createResponse($statusCode, $message ?? "fail", [], $errors);
     }
 
     public function createResponseInternalError($errors = null,)
     {
-        return $this->createResponse(500, "fail", [], $errors->getMessage());
+        return $this->createResponse(Response::HTTP_INTERNAL_SERVER_ERROR, "fail", [], $errors->getMessage());
     }
 
     public function createResponseForbbiden()
     {
-        return $this->createResponse(403, "fail", [], "Forbbiden");
+        return $this->createResponse(Response::HTTP_FORBIDDEN, "fail", [], "Forbbiden.");
     }
 }

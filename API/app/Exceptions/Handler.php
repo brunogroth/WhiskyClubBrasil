@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -28,12 +29,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ValidationException) {
-            return $this->createResponse(422, "Erro de validação", [], $exception->errors());
-        }
-
         if ($exception instanceof AuthenticationException) {
-            return $this->createResponse(401, "Erro de autenticação", [], $exception->getMessage());
+            return $this->createResponse(Response::HTTP_UNAUTHORIZED, "Authentication error.", [], $exception->getMessage());
         }
 
         if ($exception instanceof AuthorizationException) {
@@ -41,11 +38,15 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof ModelNotFoundException || NotFoundException::class === get_class($exception)) {
-            return $this->createResponseNotFound($exception->getMessage() ?? "Not Found");
+            return $this->createResponseNotFound($exception->getMessage() ?? "Not Found.");
+        }
+
+        if ($exception instanceof ValidationException) {
+            return $this->createResponse(Response::HTTP_UNPROCESSABLE_ENTITY, "Validation Error Ocurred.", [], $exception->errors());
         }
 
         if ($exception instanceof NotFoundHttpException) {
-            return $this->createResponseNotFound($exception->getMessage() ?? "Route Not Found");
+            return $this->createResponseNotFound($exception->getMessage() ?? "Route Not Found.");
         }
 
         if ($exception instanceof NotFoundException) {
@@ -53,7 +54,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof BadRequestException) {
-            return $this->createResponseBadRequest($exception->getMessage(), $exception->errors(), $exception->getCode() ?: 500);
+            return $this->createResponseBadRequest($exception->getMessage(), $exception->errors(), $exception->getCode() ?: Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->createResponseInternalError($exception);
