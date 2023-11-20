@@ -3,6 +3,7 @@
 // use Illuminate\Http\Request;
 
 use App\Http\Controllers\Website\AdvantageController;
+use App\Http\Controllers\Website\BannerController;
 use App\Http\Controllers\Website\CommonQuestionController;
 use App\Http\Controllers\Website\WorkingStepController;
 use Illuminate\Support\Facades\Route;
@@ -25,8 +26,13 @@ Route::prefix('/working-steps')->group(function () {
 
 Route::prefix('/advantages')->group(function () {
     Route::get('/', [AdvantageController::class, 'index'])->name('advantage.index');
-    Route::post('/create', [AdvantageController::class, 'store'])->name('advantage.store');
+    Route::post('/create', [AdvantageController::class, 'store'])->name('advantage.create');
     Route::patch('/edit/{id}', [AdvantageController::class, 'update'])->name('advantage.edit');
     Route::get('/{id}', [AdvantageController::class, 'show'])->name('advantage.show');
     Route::delete('/{id}', [AdvantageController::class, 'destroy'])->name('advantage.delete');
+});
+
+Route::prefix('banners')->group(function () {
+    Route::get('/', [BannerController::class, 'index'])->name('banner.index');
+    Route::post('/create', [BannerController::class, 'store'])->name('banner.create');
 });
