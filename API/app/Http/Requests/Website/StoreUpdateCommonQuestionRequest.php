@@ -32,7 +32,6 @@ class StoreUpdateCommonQuestionRequest extends FormRequest
             'answer' => [
                 'required',
                 'string',
-                'max:255'
             ]
         ];
 

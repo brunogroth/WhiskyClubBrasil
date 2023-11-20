@@ -20,6 +20,8 @@ class CommonQuestionController extends Controller
 
     /**
      * Display a listing of the resource.
+     * 
+     * @return CommonQuestionResource
      */
     public function index()
     {
@@ -79,7 +81,7 @@ class CommonQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      * 
-     * @return JsonResponse
+     * @return JsonResponse NO CONTENT - 204
      */
     public function destroy(int $id): JsonResponse
     {

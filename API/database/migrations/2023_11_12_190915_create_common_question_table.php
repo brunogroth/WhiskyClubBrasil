@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('common_questions', function (Blueprint $table) {
             $table->id();
             $table->string('question')->unique();
-            $table->string('answer');
+            $table->text('answer');
             $table->timestamps();
             $table->softDeletes();
         });

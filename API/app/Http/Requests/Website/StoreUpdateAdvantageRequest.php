@@ -24,7 +24,7 @@ class StoreUpdateAdvantageRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255|min:3|' . Rule::unique('advantages')->ignore($this->id),
-            'description' => 'required|string|max:255|min:3',
+            'description' => 'required|string|min:3',
             'position' => 'required|numeric|' . Rule::unique('advantages')->ignore($this->id)
         ];
     }

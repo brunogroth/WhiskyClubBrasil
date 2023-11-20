@@ -32,7 +32,6 @@ class StoreUpdateWorkingStepRequest extends FormRequest
             'description' => [
                 'required',
                 'string',
-                'max:255'
             ]
         ];
     }

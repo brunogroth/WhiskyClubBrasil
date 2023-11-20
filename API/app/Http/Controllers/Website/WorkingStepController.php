@@ -72,7 +72,7 @@ class WorkingStepController extends Controller
     /**
      * Remove the specified resource from storage.
      * 
-     * @return JsonResponse
+     * @return JsonResponse NO CONTENT - 204
      */
     public function destroy(string $id)
     {

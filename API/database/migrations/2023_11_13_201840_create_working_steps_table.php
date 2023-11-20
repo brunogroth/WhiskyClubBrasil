@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('working_steps', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
-            $table->string('description');
+            $table->text('description');
             $table->timestamps();
             $table->softDeletes();
         });

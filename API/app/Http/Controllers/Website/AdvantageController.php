@@ -27,6 +27,8 @@ class AdvantageController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * 
+     * @return AdvantageResource
      */
     public function store(StoreUpdateAdvantageRequest $request): JsonResponse | AdvantageResource
     {
@@ -40,6 +42,8 @@ class AdvantageController extends Controller
 
     /**
      * Display the specified resource.
+     * 
+     * @return AdvantageResource
      */
     public function show(int $id): JsonResponse | AdvantageResource
     {
@@ -48,10 +52,10 @@ class AdvantageController extends Controller
         return new AdvantageResource($advantage);
     }
 
-
-
     /**
      * Update the specified resource in storage.
+     * 
+     * @return AdvantageResource
      */
     public function update(StoreUpdateAdvantageRequest $request, int $id): JsonResponse | AdvantageResource
     {
@@ -65,6 +69,8 @@ class AdvantageController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @return JsonResponse NO CONTENT - 204
      */
     public function destroy(int $id): JsonResponse
     {
