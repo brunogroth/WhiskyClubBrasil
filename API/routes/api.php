@@ -35,4 +35,6 @@ Route::prefix('/advantages')->group(function () {
 Route::prefix('banners')->group(function () {
     Route::get('/', [BannerController::class, 'index'])->name('banner.index');
     Route::post('/create', [BannerController::class, 'store'])->name('banner.create');
+
+    Route::delete('/{id}', [BannerController::class, 'destroy'])->name('banner.delete');
 });

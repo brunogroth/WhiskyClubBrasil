@@ -34,7 +34,7 @@ trait ResponseCreator
         return $this->createResponse($statusCode, $message ?? "fail", [], $errors);
     }
 
-    public function createResponseInternalError($errors = null,)
+    public function createResponseInternalError($errors = null)
     {
         return $this->createResponse(Response::HTTP_INTERNAL_SERVER_ERROR, "fail", [], $errors->getMessage());
     }
