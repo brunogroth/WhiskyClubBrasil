@@ -44,21 +44,63 @@ class BannerController extends Controller
     public function store(StoreUpdateBannerRequest $request)
     {
 
-        $bannerData = $request->validated();
+        $data = $request->validated();
         $image_name = Carbon::now()->format('YmdHisu') .
             // '-' . strstr($request->image_url, '.', true) .
             '.' . $request->image_url->getClientOriginalExtension();
 
-        $bannerData['image_url'] = $image_name;
+        $data['image_url'] = $image_name;
 
         Storage::disk('banners')->put($image_name, file_get_contents($request->image_url));
 
-        $banner = Banner::create($bannerData);
+        $banner = $this->repository->create($data);
 
         $resource = $banner;
         $resource->image_url = asset('storage/banners/' . $image_name);
 
         return new BannerResource($resource);
+    }
+
+    /**
+     * Display the specified resource.
+     * 
+     * @return BannerResource
+     */
+    public function show(int $id): JsonResponse|BannerResource
+    {
+        $banner = $this->repository->findOrFail($id);
+
+        return new BannerResource($banner);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     * 
+     * @return BannerResource
+     */
+    public function update(StoreUpdateBannerRequest $request, int $id): JsonResponse|BannerResource
+    {
+        try {
+            $data = $request->validated();
+            $banner = $this->repository->findOrFail($id);
+
+            if (isset($data['image_url'])) {
+                Storage::disk('banners')->delete($banner->image_url);
+                $image_name = Carbon::now()->format('YmdHisu') .
+                    // '-' . strstr($request->image_url, '.', true) .
+                    '.' . $request->image_url->getClientOriginalExtension();
+
+                Storage::disk('banners')->put($image_name, file_get_contents($request->image_url));
+
+                $data['image_url'] = $image_name;
+            }
+
+            $banner->update($data);
+
+            return new BannerResource($banner);
+        } catch (Throwable $error) {
+            dd($error);
+        }
     }
 
     /**
@@ -81,4 +123,3 @@ class BannerController extends Controller
         }
     }
 }
-//20231120230414
