@@ -5,6 +5,7 @@
 use App\Http\Controllers\Website\AdvantageController;
 use App\Http\Controllers\Website\BannerController;
 use App\Http\Controllers\Website\CommonQuestionController;
+use App\Http\Controllers\Website\SubscriptionModelController;
 use App\Http\Controllers\Website\WorkingStepController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,9 @@ Route::prefix('banners')->group(function () {
     Route::patch('/edit/{id}', [BannerController::class, 'update'])->name('banner.edit');
     Route::get('/{id}', [BannerController::class, 'show'])->name('banner.show');
     Route::delete('/{id}', [BannerController::class, 'destroy'])->name('banner.delete');
+});
+
+Route::prefix('subscription-models')->group(function () {
+    Route::get('/', [SubscriptionModelController::class, 'index'])->name('subscription-model.index');
+    Route::post('/create', [SubscriptionModelController::class, 'store'])->name('subscription-model.create');
 });
