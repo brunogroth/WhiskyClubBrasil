@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('image_url');
             $table->string('url')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banner');
+        Schema::dropIfExists('banners');
     }
 };

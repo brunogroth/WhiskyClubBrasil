@@ -7,6 +7,7 @@ use App\Http\Controllers\Website\BannerController;
 use App\Http\Controllers\Website\CommonQuestionController;
 use App\Http\Controllers\Website\SubscriptionModelController;
 use App\Http\Controllers\Website\WorkingStepController;
+use App\Models\Website\SubscriptionModel;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/common-questions')->group(function () {
@@ -44,4 +45,6 @@ Route::prefix('banners')->group(function () {
 Route::prefix('subscription-models')->group(function () {
     Route::get('/', [SubscriptionModelController::class, 'index'])->name('subscription-model.index');
     Route::post('/create', [SubscriptionModelController::class, 'store'])->name('subscription-model.create');
+    Route::get('/{id}', [SubscriptionModelController::class, 'show'])->name('subscription-model.show');
+    Route::delete('/{id}', [SubscriptionModelController::class, 'destroy'])->name('subscription-model.delete');
 });

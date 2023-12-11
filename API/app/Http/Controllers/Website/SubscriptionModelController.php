@@ -6,17 +6,27 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Website\SubscriptionModelRequest;
 use App\Http\Resources\Website\SubscriptionModelResource;
 use App\Models\Website\SubscriptionModel;
+use App\Traits\ResponseCreator;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class SubscriptionModelController extends Controller
 {
+
+    use ResponseCreator;
+
     public function __construct(
         protected SubscriptionModel $model
     ) {
     }
 
+    /**
+     * Display a listing of the resource.
+     * 
+     * @return SubscriptionModelResource
+     */
     public function index()
     {
         $subscriptionModels = $this->model->all();
@@ -24,7 +34,12 @@ class SubscriptionModelController extends Controller
         return SubscriptionModelResource::collection($subscriptionModels);
     }
 
-    public function store(SubscriptionModelRequest $request): SubscriptionModelResource
+    /**
+     * Store a newly created resource in storage.
+     * 
+     * @return JsonResponse|SubscriptionModelRequest
+     */
+    public function store(SubscriptionModelRequest $request): JsonResponse|SubscriptionModelResource
     {
         $data = $request->validated();
 
@@ -36,5 +51,38 @@ class SubscriptionModelController extends Controller
         $subscriptionModel = $this->model->create($data);
 
         return new SubscriptionModelResource($subscriptionModel);
+    }
+
+    /**
+     * Display the specified resource.
+     * 
+     * @return JsonResponse|SubscriptionModelRequest
+     */
+    public function show(int $id): JsonResponse|SubscriptionModelResource
+    {
+        $subscriptionModel = $this->model->findOrFail($id);
+
+        return new SubscriptionModelResource($subscriptionModel);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * 
+     * @return JsonResponse NO CONTENT - 204
+     */
+    public function destroy(int $id): JsonResponse
+    {
+        try {
+
+            $subscriptionModel = $this->model->findOrFail($id);
+
+            Storage::disk('subscription-models')->delete($subscriptionModel->image_url);
+
+            $subscriptionModel->delete();
+
+            return response()->json([], JsonResponse::HTTP_NO_CONTENT);
+        } catch (Throwable $error) {
+            return $this->createResponseInternalError($error);
+        }
     }
 }
