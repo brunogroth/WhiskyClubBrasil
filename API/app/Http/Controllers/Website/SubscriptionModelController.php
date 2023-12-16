@@ -65,6 +65,25 @@ class SubscriptionModelController extends Controller
         return new SubscriptionModelResource($subscriptionModel);
     }
 
+    public function update(SubscriptionModelRequest $request, int $id): JsonResponse|SubscriptionModelResource
+    {
+        $data = $request->validated();
+
+        $subscriptionModel = $this->model->findOrFail($id);
+        if (isset($data['image_url'])) {
+            Storage::disk('subscription-models')->delete($subscriptionModel->image_url);
+            $image_name = Carbon::now()->format('YmdHisu') .
+                '.' . $request->image_url->getClientOriginalExtension();
+            Storage::disk('subscription-models')->put($image_name, file_get_contents($request->image_url));
+
+            $data['image_url'] = $image_name;
+        }
+
+        $subscriptionModel->update($data);
+
+        return new SubscriptionModelResource($subscriptionModel);
+    }
+
     /**
      * Remove the specified resource from storage.
      * 

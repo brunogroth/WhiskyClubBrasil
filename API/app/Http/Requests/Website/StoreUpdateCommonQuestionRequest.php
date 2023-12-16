@@ -27,7 +27,7 @@ class StoreUpdateCommonQuestionRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('common_questions')->ignore($this->id)
+                Rule::unique('common_questions')->ignore($this->id)->whereNull('deleted_at')
             ],
             'answer' => [
                 'required',

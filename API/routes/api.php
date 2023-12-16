@@ -45,6 +45,7 @@ Route::prefix('banners')->group(function () {
 Route::prefix('subscription-models')->group(function () {
     Route::get('/', [SubscriptionModelController::class, 'index'])->name('subscription-model.index');
     Route::post('/create', [SubscriptionModelController::class, 'store'])->name('subscription-model.create');
+    Route::patch('/edit/{id}', [SubscriptionModelController::class, 'update'])->name('subscription-model.edit');
     Route::get('/{id}', [SubscriptionModelController::class, 'show'])->name('subscription-model.show');
     Route::delete('/{id}', [SubscriptionModelController::class, 'destroy'])->name('subscription-model.delete');
 });

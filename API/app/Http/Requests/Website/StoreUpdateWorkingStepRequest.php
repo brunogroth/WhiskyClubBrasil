@@ -27,7 +27,7 @@ class StoreUpdateWorkingStepRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('working_steps')->ignore($this->id)
+                Rule::unique('working_steps')->ignore($this->id)->whereNull('deleted_at')
             ],
             'description' => [
                 'required',
